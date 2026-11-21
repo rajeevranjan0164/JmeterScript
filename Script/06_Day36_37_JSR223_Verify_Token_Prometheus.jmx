@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="06 Day36-37 JSR223 Verify Token Prometheus" enabled="true">
+      <stringProp name="TestPlan.comments">Class Day 36/37: JSR223 Assertion verifies place-order JSON; JSR223 logs tokens + failures; Prometheus text file demo for Pushgateway/Grafana later.</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">127.0.0.1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port" elementType="Argument">
+            <stringProp name="Argument.name">port</stringProp>
+            <stringProp name="Argument.value">8000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="p_email" elementType="Argument">
+            <stringProp name="Argument.name">p_email</stringProp>
+            <stringProp name="Argument.value">aarav@voltcart.demo</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="p_password" elementType="Argument">
+            <stringProp name="Argument.name">p_password</stringProp>
+            <stringProp name="Argument.value">Demo@123</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <stringProp name="HTTPSampler.domain">${host}</stringProp>
+        <stringProp name="HTTPSampler.port">${port}</stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.implementation"></stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Content-Type</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Accept</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
+      <hashTree/>
+      <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+        <collectionProp name="CookieManager.cookies"/>
+        <boolProp name="CookieManager.clearEachIteration">true</boolProp>
+        <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
+      </CookieManager>
+      <hashTree/>
+      <CacheManager guiclass="CacheManagerGui" testclass="CacheManager" testname="HTTP Cache Manager" enabled="true">
+        <boolProp name="clearEachIteration">true</boolProp>
+        <boolProp name="useExpires">true</boolProp>
+        <boolProp name="CacheManager.controlledByThread">false</boolProp>
+      </CacheManager>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="JSR223 verify + token + prometheus demo" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <longProp name="ThreadGroup.duration">0</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Full AI path with JSR223" enabled="true">
+          <boolProp name="TransactionController.parent">true</boolProp>
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+        </TransactionController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="01 Login" enabled="true">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">60000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/auth/login</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&quot;email&quot;:&quot;${p_email}&quot;,&quot;password&quot;:&quot;${p_password}&quot;}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert login ok" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1844362984">&quot;ok&quot;: true</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02 Product list" enabled="true">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">60000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/products</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="limit" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.name">limit</stringProp>
+                  <stringProp name="Argument.value">5</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert products key" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1003761308">products</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_product_name" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_product_name</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.products[*].name</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">Pixel 8a 128GB</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_product_id" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_product_id</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.products[*].id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">PHN-104</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="03 AI Place order">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">180000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/chat</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&quot;message&quot;:&quot;Place an order for 1 x ${c_product_name}&quot;,&quot;session_id&quot;:&quot;${c_session_id}&quot;,&quot;message_id&quot;:&quot;msg-${__UUID}&quot;}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 set session_id once" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">if (!vars.get(&apos;c_session_id&apos;)) {
+  vars.put(&apos;c_session_id&apos;, &apos;jmeter-&apos; + UUID.randomUUID().toString())
+}</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200 (transport)" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert message: Order placed successfully" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1375073096">Order placed successfully</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert order id prefix ORD-" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="2434444">ORD-</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert status Confirmed" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-680310223">&quot;status&quot;: &quot;Confirmed&quot;</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert trace outcome success" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1280323017">&quot;outcome&quot;: &quot;success&quot;</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert place_order tool ran" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1052045088">&quot;tool&quot;: &quot;place_order&quot;</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert place_order ok true" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1844362984">&quot;ok&quot;: true</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert order cancellable" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1873408236">&quot;cancellable&quot;: true</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: entities.order.status = Confirmed" enabled="true">
+              <stringProp name="JSON_PATH">$.entities.order.status</stringProp>
+              <stringProp name="EXPECTED_VALUE">Confirmed</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+              <stringProp name="TEST_VALIDATION">EQUALS</stringProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: trace.outcome = success" enabled="true">
+              <stringProp name="JSON_PATH">$.trace.outcome</stringProp>
+              <stringProp name="EXPECTED_VALUE">success</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+              <stringProp name="TEST_VALIDATION">EQUALS</stringProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: entities.order.id exists" enabled="true">
+              <stringProp name="JSON_PATH">$.entities.order.id</stringProp>
+              <stringProp name="EXPECTED_VALUE"></stringProp>
+              <boolProp name="JSONVALIDATION">false</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: entities.order.total exists" enabled="true">
+              <stringProp name="JSON_PATH">$.entities.order.total</stringProp>
+              <stringProp name="EXPECTED_VALUE"></stringProp>
+              <boolProp name="JSONVALIDATION">false</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: entities.product.name exists" enabled="true">
+              <stringProp name="JSON_PATH">$.entities.product.name</stringProp>
+              <stringProp name="EXPECTED_VALUE"></stringProp>
+              <boolProp name="JSONVALIDATION">false</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON: clarification is false" enabled="true">
+              <stringProp name="JSON_PATH">$.trace.clarification</stringProp>
+              <stringProp name="EXPECTED_VALUE">false</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+              <stringProp name="TEST_VALIDATION">EQUALS</stringProp>
+            </JSONPathAssertion>
+            <hashTree/>
+            <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration soft check (180s SLA learning)" enabled="true">
+              <stringProp name="DurationAssertion.duration">180000</stringProp>
+            </DurationAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_order_id" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_order_id</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.order.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regex Extractor - c_order_id_regex" enabled="true">
+              <stringProp name="RegexExtractor.refname">c_order_id_regex</stringProp>
+              <stringProp name="RegexExtractor.regex">(ORD-[0-9]{8}-[A-Z0-9]+)</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">default</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+              <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_order_status" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_order_status</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.order.status</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_order_total" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_order_total</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.order.total</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_product_ordered" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_product_ordered</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.product.name</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_outcome" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_outcome</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.outcome</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_input_tokens" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_input_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.input_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_output_tokens" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_output_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.output_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_total_tokens" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_total_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.total_tokens</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_cost" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_cost</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.estimated_cost_usd</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_latency_ms" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_latency_ms</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.latency_ms</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_trace_id" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_trace_id</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.trace.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assert place-order (Groovy)" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import groovy.json.JsonSlurper
+
+def body = prev.getResponseDataAsString()
+def fails = []
+if (!body) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Empty place-order response body&apos;)
+  return
+}
+
+def json
+try {
+  json = new JsonSlurper().parseText(body)
+} catch (Exception e) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Response is not JSON: &apos; + e.message)
+  return
+}
+
+// Day 35: HTTP 200 is not business success
+if (!(json.message?.toString()?.contains(&apos;Order placed successfully&apos;))) {
+  fails &lt;&lt; &apos;message must contain \&quot;Order placed successfully\&quot; (got: &apos; + json.message + &apos;)&apos;
+}
+if (json.trace?.clarification == true) {
+  fails &lt;&lt; &apos;trace.clarification must be false (agent asked a question instead of ordering)&apos;
+}
+if (json.trace?.outcome?.toString() != &apos;success&apos;) {
+  fails &lt;&lt; &apos;trace.outcome must be success (got: &apos; + json.trace?.outcome + &apos;)&apos;
+}
+
+def order = json.entities?.order
+if (order == null) {
+  fails &lt;&lt; &apos;entities.order missing&apos;
+} else {
+  if (!(order.id?.toString()?.startsWith(&apos;ORD-&apos;))) fails &lt;&lt; &apos;entities.order.id missing/invalid&apos;
+  if (order.status?.toString() != &apos;Confirmed&apos;) fails &lt;&lt; &apos;entities.order.status must be Confirmed&apos;
+  if (order.cancellable != true) fails &lt;&lt; &apos;entities.order.cancellable must be true&apos;
+  if (order.total == null) fails &lt;&lt; &apos;entities.order.total missing&apos;
+  vars.put(&apos;c_order_id&apos;, order.id?.toString() ?: &apos;default&apos;)
+  vars.put(&apos;c_order_status&apos;, order.status?.toString() ?: &apos;default&apos;)
+  vars.put(&apos;c_order_total&apos;, order.total?.toString() ?: &apos;0&apos;)
+}
+
+def product = json.entities?.product
+if (product?.name == null) {
+  fails &lt;&lt; &apos;entities.product.name missing&apos;
+} else {
+  vars.put(&apos;c_product_ordered&apos;, product.name.toString())
+}
+
+def place = json.actions?.find { it.tool == &apos;place_order&apos; }
+if (place == null) {
+  fails &lt;&lt; &apos;actions must include tool place_order&apos;
+} else if (place.result?.ok != true) {
+  fails &lt;&lt; &apos;place_order.result.ok must be true&apos;
+}
+
+// Token / cost / latency capture (Day 36)
+def t = json.trace ?: [:]
+vars.put(&apos;c_input_tokens&apos;, (t.input_tokens ?: 0).toString())
+vars.put(&apos;c_output_tokens&apos;, (t.output_tokens ?: 0).toString())
+vars.put(&apos;c_total_tokens&apos;, (t.total_tokens ?: 0).toString())
+vars.put(&apos;c_cost&apos;, (t.estimated_cost_usd ?: 0).toString())
+vars.put(&apos;c_latency_ms&apos;, (t.latency_ms ?: 0).toString())
+vars.put(&apos;c_outcome&apos;, (t.outcome ?: &apos;default&apos;).toString())
+vars.put(&apos;c_trace_id&apos;, (t.id ?: &apos;&apos;).toString())
+
+// Outlier hint (class: most ~2k tokens, some 8k) — warn in log only
+try {
+  def totalTok = (t.total_tokens ?: 0) as int
+  if (totalTok &gt;= 8000) {
+    log.warn(&apos;TOKEN OUTLIER total_tokens=&apos; + totalTok + &apos; order=&apos; + vars.get(&apos;c_order_id&apos;))
+  }
+} catch (ignored) {}
+
+if (fails) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;JSR223 place-order failed:\\n - &apos; + fails.join(&apos;\\n - &apos;))
+} else {
+  AssertionResult.setFailure(false)
+}</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 Log failures only" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.*;
+String path = &quot;C:/AI LLM Testing/Jmeter/Day27-Learning/data/failures_only.csv&quot;;
+Path p = Paths.get(path);
+if (!Files.exists(p)) { Files.write(p, (&quot;serial,timestamp,label,order_id,code,message\n&quot;).getBytes(&quot;UTF-8&quot;)); }
+if (!prev.isSuccessful()) {
+  String serial = String.valueOf(System.currentTimeMillis());
+  String line = serial + &quot;,&quot; + serial + &quot;,&quot; + prev.getSampleLabel().replace(&quot;,&quot;,&quot; &quot;) + &quot;,&quot; +
+    (vars.get(&quot;c_order_id&quot;) ?: &quot;&quot;) + &quot;,&quot; + prev.getResponseCode() + &quot;,&quot; +
+    String.valueOf(prev.getResponseMessage()).replace(&quot;,&quot;,&quot; &quot;).replace(&quot;\n&quot;,&quot; &quot;) + &quot;\n&quot;;
+  Files.write(p, line.getBytes(&quot;UTF-8&quot;), StandardOpenOption.APPEND);
+}
+</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 Token Logger" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.*;
+String path = &quot;C:/AI LLM Testing/Jmeter/Day27-Learning/data/token_log.csv&quot;;
+Path p = Paths.get(path);
+if (!Files.exists(p)) { Files.write(p, (&quot;timestamp,thread,order_id,product,input_tokens,output_tokens,total_tokens,cost,latency_ms,outcome,trace_id\n&quot;).getBytes(&quot;UTF-8&quot;)); }
+String line = System.currentTimeMillis() + &quot;,&quot; + ctx.getThread().getThreadName() + &quot;,&quot; +
+  (vars.get(&quot;c_order_id&quot;) ?: &quot;&quot;) + &quot;,&quot; + (vars.get(&quot;c_product_ordered&quot;) ?: &quot;&quot;) + &quot;,&quot; +
+  (vars.get(&quot;c_input_tokens&quot;) ?: &quot;0&quot;) + &quot;,&quot; + (vars.get(&quot;c_output_tokens&quot;) ?: &quot;0&quot;) + &quot;,&quot; +
+  (vars.get(&quot;c_total_tokens&quot;) ?: &quot;0&quot;) + &quot;,&quot; + (vars.get(&quot;c_cost&quot;) ?: &quot;0&quot;) + &quot;,&quot; +
+  (vars.get(&quot;c_latency_ms&quot;) ?: &quot;0&quot;) + &quot;,&quot; + (vars.get(&quot;c_outcome&quot;) ?: &quot;&quot;) + &quot;,&quot; +
+  (vars.get(&quot;c_trace_id&quot;) ?: &quot;&quot;) + &quot;\n&quot;;
+Files.write(p, line.getBytes(&quot;UTF-8&quot;), StandardOpenOption.APPEND);
+</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 Prometheus metrics demo (Day 37)">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.*;
+String path = &quot;C:/AI LLM Testing/Jmeter/Day27-Learning/data/prometheus_push_demo.txt&quot;;
+def inTok = vars.get(&apos;c_input_tokens&apos;) ?: &apos;0&apos;;
+def outTok = vars.get(&apos;c_output_tokens&apos;) ?: &apos;0&apos;;
+def totTok = vars.get(&apos;c_total_tokens&apos;) ?: &apos;0&apos;;
+def lat = vars.get(&apos;c_latency_ms&apos;) ?: &apos;0&apos;;
+def err = prev.isSuccessful() ? &apos;0&apos; : &apos;1&apos;;
+String body = &apos;# HELP voltcart_ai_input_tokens Input tokens\n&apos;
+  + &apos;# TYPE voltcart_ai_input_tokens gauge\n&apos;
+  + &apos;voltcart_ai_input_tokens &apos; + inTok + &apos;\n&apos;
+  + &apos;# HELP voltcart_ai_output_tokens Output tokens\n&apos;
+  + &apos;# TYPE voltcart_ai_output_tokens gauge\n&apos;
+  + &apos;voltcart_ai_output_tokens &apos; + outTok + &apos;\n&apos;
+  + &apos;# HELP voltcart_ai_total_tokens Total tokens\n&apos;
+  + &apos;# TYPE voltcart_ai_total_tokens gauge\n&apos;
+  + &apos;voltcart_ai_total_tokens &apos; + totTok + &apos;\n&apos;
+  + &apos;# HELP voltcart_ai_latency_ms Latency ms\n&apos;
+  + &apos;# TYPE voltcart_ai_latency_ms gauge\n&apos;
+  + &apos;voltcart_ai_latency_ms &apos; + lat + &apos;\n&apos;
+  + &apos;# HELP voltcart_ai_errors Error flag\n&apos;
+  + &apos;# TYPE voltcart_ai_errors gauge\n&apos;
+  + &apos;voltcart_ai_errors &apos; + err + &apos;\n&apos;;
+Files.write(Paths.get(path), body.getBytes(&quot;UTF-8&quot;));
+try {
+  def url = new URL(&apos;http://127.0.0.1:9091/metrics/job/voltcart_jmeter&apos;);
+  def conn = url.openConnection();
+  conn.setDoOutput(true);
+  conn.setRequestMethod(&apos;POST&apos;);
+  conn.setConnectTimeout(3000);
+  conn.setReadTimeout(5000);
+  conn.setRequestProperty(&apos;Content-Type&apos;, &apos;text/plain; version=0.0.4; charset=utf-8&apos;);
+  conn.getOutputStream().withWriter(&apos;UTF-8&apos;) { it &lt;&lt; body };
+  def code = conn.getResponseCode();
+  log.info(&apos;Pushgateway response code=&apos; + code + &apos; total_tokens=&apos; + totTok);
+  if (code &lt; 200 || code &gt;= 300) { log.warn(&apos;Pushgateway push failed HTTP &apos; + code); }
+} catch (Exception e) {
+  log.warn(&apos;Pushgateway push error (is :9091 running?): &apos; + e.message);
+}
+</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler (turn OFF for load)" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="04 Verify orders list" enabled="true">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">60000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/orders</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert order id present in list" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1629974590">${c_order_id}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert orders array" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1008770331">orders</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_latest_order" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_latest_order</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.orders[0].id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="05 AI Cancel order" enabled="true">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">180000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/chat</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&quot;message&quot;:&quot;Cancel order ${c_order_id}&quot;,&quot;session_id&quot;:&quot;${c_session_id}&quot;,&quot;message_id&quot;:&quot;msg-${__UUID}&quot;}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 set session_id once" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">if (!vars.get(&apos;c_session_id&apos;)) {
+  vars.put(&apos;c_session_id&apos;, &apos;jmeter-&apos; + UUID.randomUUID().toString())
+}</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223PreProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200 (transport)" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_cancel_order_id" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_cancel_order_id</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.order.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor - c_cancel_status" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">c_cancel_status</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.entities.order.status</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">default</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 soft-check cancel chat (proof is GET orders)" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import groovy.json.JsonSlurper
+
+def body = prev.getResponseDataAsString() ?: &apos;&apos;
+vars.put(&apos;c_cancel_raw_snip&apos;, body.take(400).replace(&apos;\\n&apos;,&apos; &apos;))
+if (!body) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Empty cancel chat response&apos;)
+  return
+}
+def json
+try {
+  json = new JsonSlurper().parseText(body)
+} catch (Exception e) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Cancel chat not JSON: &apos; + e.message + &apos; body=&apos; + body.take(200))
+  return
+}
+
+def msg = json.message?.toString() ?: &apos;&apos;
+def order = json.entities?.order
+def cancel = (json.actions ?: []).find { it.tool == &apos;cancel_order&apos; }
+def toolOk = cancel?.result?.ok == true
+def statusCancelled = order?.status?.toString()?.equalsIgnoreCase(&apos;Cancelled&apos;)
+vars.put(&apos;c_cancel_chat_msg&apos;, msg.take(200))
+vars.put(&apos;c_cancel_tool_ok&apos;, toolOk ? &apos;true&apos; : &apos;false&apos;)
+if (order?.status) vars.put(&apos;c_cancel_status&apos;, order.status.toString())
+if (order?.id) vars.put(&apos;c_cancel_order_id&apos;, order.id.toString())
+
+// Only hard-fail chat when we can prove cancel was rejected by the tool
+if (cancel != null &amp;&amp; cancel.result?.ok == false) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;cancel_order tool returned ok=false: &apos; + String.valueOf(cancel.result?.error ?: cancel.result))
+  return
+}
+
+// If tool clearly succeeded, pass here
+if (toolOk || statusCancelled) {
+  AssertionResult.setFailure(false)
+  return
+}
+
+// Otherwise pass chat soft — GET /api/orders assertion is the business gate
+AssertionResult.setFailure(false)
+log.warn(&apos;AI cancel chat did not show cancel_order tool. message=&apos; + msg + &apos; — will verify via GET /api/orders&apos;)</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 Log failures only" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import java.nio.file.*;
+String path = &quot;C:/AI LLM Testing/Jmeter/Day27-Learning/data/failures_only.csv&quot;;
+Path p = Paths.get(path);
+if (!Files.exists(p)) { Files.write(p, (&quot;serial,timestamp,label,order_id,code,message\n&quot;).getBytes(&quot;UTF-8&quot;)); }
+if (!prev.isSuccessful()) {
+  String serial = String.valueOf(System.currentTimeMillis());
+  String line = serial + &quot;,&quot; + serial + &quot;,&quot; + prev.getSampleLabel().replace(&quot;,&quot;,&quot; &quot;) + &quot;,&quot; +
+    (vars.get(&quot;c_order_id&quot;) ?: &quot;&quot;) + &quot;,&quot; + prev.getResponseCode() + &quot;,&quot; +
+    String.valueOf(prev.getResponseMessage()).replace(&quot;,&quot;,&quot; &quot;).replace(&quot;\n&quot;,&quot; &quot;) + &quot;\n&quot;;
+  Files.write(p, line.getBytes(&quot;UTF-8&quot;), StandardOpenOption.APPEND);
+}
+</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="06 Verify order is Cancelled" enabled="true">
+            <intProp name="HTTPSampler.connect_timeout">10000</intProp>
+            <intProp name="HTTPSampler.response_timeout">60000</intProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.path">api/orders</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert HTTP 200" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert orders array" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1008770331">orders</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assert order Cancelled in /api/orders" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="script">import groovy.json.JsonSlurper
+
+def wanted = (vars.get(&apos;c_order_id&apos;) ?: &apos;&apos;).trim()
+def body = prev.getResponseDataAsString() ?: &apos;&apos;
+if (!wanted || wanted == &apos;default&apos;) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;c_order_id missing — place-order extract failed earlier&apos;)
+  return
+}
+if (!body) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Empty /api/orders response&apos;)
+  return
+}
+def json
+try {
+  json = new JsonSlurper().parseText(body)
+} catch (Exception e) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;orders list not JSON: &apos; + e.message)
+  return
+}
+
+def orders = json.orders ?: []
+def match = orders.find { it.id?.toString()?.equalsIgnoreCase(wanted) }
+if (match == null) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(&apos;Order &apos; + wanted + &apos; not found in /api/orders. chatMsg=&apos; + (vars.get(&apos;c_cancel_chat_msg&apos;) ?: &apos;&apos;))
+  return
+}
+def st = match.status?.toString() ?: &apos;&apos;
+if (!st.equalsIgnoreCase(&apos;Cancelled&apos;)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage(
+    &apos;Order &apos; + wanted + &apos; status is \&quot;&apos; + st + &apos;\&quot; (expected Cancelled). &apos; +
+    &apos;AI cancel likely did not call the tool. chatMsg=&apos; + (vars.get(&apos;c_cancel_chat_msg&apos;) ?: &apos;&apos;) +
+    &apos; raw=&apos; + (vars.get(&apos;c_cancel_raw_snip&apos;) ?: &apos;&apos;)
+  )
+  return
+}
+AssertionResult.setFailure(false)
+vars.put(&apos;c_order_status&apos;, &apos;Cancelled&apos;)</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>true</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>true</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

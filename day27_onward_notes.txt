@@ -1,0 +1,1266 @@
+1099|Day 27 — Keep the answer fast when the crowd arrives
+
+1100|Today starts performance. JMeter comes after the words. AI is not only a chatbot. A review summary or a button that places an order is still an AI path.
+
+1101|1. What "fast" means
+
+1102|One user
+
+1103|→ answer in about 2 seconds
+
+1104|100 users, same server
+
+1105|→ still about 2 seconds, until a limit
+
+1106|→ then the time jumps
+
+1107|A user should not see a spinner, and should not feel that other people opened the app. His picture was 2 seconds for one person, and still about 2 seconds for many. A small move, such as 2.1 or 2.2, is fine. A jump to 4 or 5 is not. The jump is not a straight line. It can stay flat, then leap. Find the user count where it leaps.
+
+1108|The restaurant picture, in test words:
+
+1109|How fast the food arrives: response time.
+
+1110|How many people are served in that time: throughput.
+
+1111|How many are seated at once: concurrency.
+
+1112|The right dish every time: reliability.
+
+1113|A sudden crowd: scalability.
+
+1114|The door is open: availability.
+
+1115|For an AI app, add one more rule. It must stay fast and stable without becoming expensive.
+
+1116|response time
+
+1117|number of users
+
+1118|cost
+
+1119|→ all three inside the requirement
+
+1120|The client sets the line. "2 seconds" is useless until they also say for how many users. His example was 2 seconds up to 1000 users, not for a million. You tune until the test meets that line.
+
+1121|2. One browser is one user
+
+1122|Postman, Selenium, or Chrome is one person. JMeter, and tools such as LoadRunner, pretend to be 100, 1000, or more. JMeter also runs on ordinary apps, so it belongs on a resume. It is strong at the load and weak at the graphs. Grafana, Prometheus, and LangSmith watch the run. Rate limits are extra on an AI test. Those parts are the next classes.
+
+1123|More users use more CPU and RAM, because every laptop is calling the same server. At 100% you add machines, or you remove the slow piece. His road picture: two cars take one hour. A crowd takes longer. Find the truck. A long tool result, a repeated tool call, or a 100-word answer can be that truck. Cut the waste and the time can fall.
+
+1124|3. Do not buy speed by breaking the answer
+
+1125|A 10-word answer is faster than a 100-word answer, and it costs fewer tokens. It can also wipe the behaviour you already passed in DeepEval. Once behaviour is fixed, do not change the model to make the test green. The room left to tune is the tools and the other boxes.
+
+1126|Cost itself is mostly fixed. More users mean more tokens. A paid tool billed per call gets expensive if the model calls it again and again. An open model adds server cost instead. He said to tune response time and throughput first, and not to turn knobs that change the bill.
+
+1127|A standalone model leaves little to tune. The provider's time is their SLA. In RAG and agents, he said the model is the small part. The tools and the processing around it are what you can speed up. Most apps he sees are RAG or agents. That share is a class picture.
+
+1128|You pay the provider for tokens. They host the model. Azure is a road to that API, and they handle the model's concurrency. Whether your tool survives 100 calls is your test. Two apps on the same host can still handle different crowds. Say "performance test of the AI application." The app may also have an image or a voice model. An LLM is only text in and text out.
+
+1129|Say this in an interview
+
+1130|"I would ask for the time and the user count together. I would run one user, then the crowd, and I would find the point where the time jumps. I would not shorten the answer just to make it faster, because that can break a score we already accepted. I would tune the tools around the model. I would say I test the AI application, not the model alone."
+
+1131|Words to remember
+
+1132|Response time — how long one answer takes.
+
+1133|Throughput — how many answers in that time.
+
+1134|Concurrency — how many users at once.
+
+1135|JMeter — pretends to be the crowd. One browser cannot.
+
+1136|Cost — tokens, or the server, or a paid tool called too often.
+
+1137|What can fail
+
+1138|One Postman call is called a load test.
+
+1139|The time is 2 seconds for 1 user and 5 seconds for 100, and nobody treats that as a fail.
+
+1140|The answer is cut to 10 words, the clock improves, and the old behaviour score is not run again.
+
+1141|The model stays fast and the tool behind it falls over.
+
+1142|You call it an LLM performance test when the app also generates images.
+
+1143|Check: The client wants 2 seconds. What else must they give you? The number of users. One user is 2 seconds and 100 users are 5. Did the test pass? No. Who owns the tool's concurrency? You, not the model host.
+
+1145|Paste the page above into the doc. The 2 seconds, 100 users, 1000 users, and 10 words versus 100 words are class examples. JMeter scripting starts in a later class.
+
+1146|Three points from the same class that did not fit the page:
+
+1147|Chunking is splitting a big document into small pieces, then tagging each piece so the right piece can be fetched. Embeddings and the vector database come later. A classmate said embedding means knowledge-base training. Vishnu did not teach that definition.
+
+1148|Ragas and DeepEval are both evaluation tools. Ragas focuses on RAG and is closer to a developer unit test. DeepEval covers LLM, RAG, and agent checks.
+
+1149|Do not freeze a product count in ground truth if the catalog can change (100 today, 120 tomorrow). Pass the tool JSON plus the behaviour rules. The CSV lives where the pipeline runs.
+
+1150|Day 28 — Load is requests per minute, not a head count
+
+1151|Today stays on performance. The triangle is still response time, users, and cost. He tied the user side to throughput. JMeter comes next. Playwright has not started.
+
+1152|1. Say the small words
+
+1153|"Time" is too thin. Say response time. Say network latency when the wait is the distance. Say RAG, agent, or tool. A tool is the old call the model makes. A request is not an order. The server can refuse it. The full trip back is the response time.
+
+1154|2. Client and server
+
+1155|Client (browser, app, kiosk, Postman, JMeter)
+
+1156|→ request
+
+1157|Server: code + software + CPU, RAM, disk
+
+1158|→ response
+
+1159|The browser is the client. The website is the application. JMeter is the client in a load test. His shop app on his laptop makes that laptop the server. App server, web server, and database server hide the code. Their practice bot used Python's live server. Apache Tomcat is a real web server. Name the slow box: load balancer, backend, database, or the AI call into the old code.
+
+1160|3. Cloud can run out
+
+1161|Spare CPUs rented by the day
+
+1162|→ one building, one rental screen
+
+1163|→ that is cloud
+
+1164|Cloud is real machines, not an unlimited sky. Auto scaling cannot invent CPUs that are not there.
+
+1165|His Amazon picture, class numbers only: 1 lakh users on 100 CPUs. At 10 lakh they want 500, and only 100 are free. Live with the slowdown, about 5 seconds becoming 15 or 20, above the SLA. Or send some traffic to a region that still has machines. Cables under the sea and extra hops add delay, so Mumbai-to-US is slower than Mumbai-to-Mumbai.
+
+1166|The tester finds the waste so more users fit on fewer CPUs. The developer fixes that box.
+
+1167|Machines in your own building are on-premise. The stronger reason is the data, not only the bill. An NDA is only a document. Banks keep sensitive data on-premise. Shops use more cloud. Both together is hybrid.
+
+1168|4. One front door, many CPUs
+
+1169|Many clients → one public address → load balancer
+
+1170|→ CPU 1 or 2 or 3 → shared disks
+
+1171|Each CPU has its own address. The world sees one. Place order can land on CPU 1 and the status check on CPU 2, only because the disks are shared.
+
+1172|5. Throughput is the load
+
+1173|100 requests finish together in 5 minutes → 20 per minute
+
+1174|100 requests finish in 1 minute → 100 per minute, higher load
+
+1175|That rate is throughput. The server does not know names. A thousand users in 10 minutes is again 100 per minute. Same rate, same load. "100 users" is vague. Turn it into 100 logins per minute, or 100 orders per minute. Ten fast people can also produce 100 logins in a minute.
+
+1176|From the questions
+
+1177|A company chatbot is a Gen AI app. Evaluate the model and the application. Do not call that job "LLM testing."
+
+1178|Goldens stay manual first. Automate only the regression rows the token budget can pay, and tag them in the script. His class count was about 25 tools and about 150 cases. Read a changing count from the API. Do not freeze today's 5. Two hundred languages is evaluation: a person per language, a checked translation, or a multilingual judge.
+
+1179|PTU means provisioned throughput units. He first said GPU, then corrected himself. His picture: tokens are one taxi ride; a PTU rents the taxi for the day, unused time included. About 3,500 tokens a minute per PTU on GPT-5 is his rough line. He would pick PTU for simple support and tokens for a hard maths tutor. The Ollama shop update is still not in class.
+
+1180|Say this in an interview
+
+1181|"I would ask for response time and throughput together. If the client only says 100 users, I would turn that into requests per minute. I would check that the region still has machines, and that a far region is not adding delay. I would name the slow box. The developer would change the code."
+
+1182|Words to remember
+
+1183|Client — anything that sends the request, including JMeter.
+
+1184|Server — code, the software that serves it, and the hardware.
+
+1185|Throughput — requests per minute, second, or hour.
+
+1186|Load balancer — picks which CPU gets this request.
+
+1187|PTU — rented processing, billed apart from each token.
+
+1188|What can fail
+
+1189|"100 users" is signed off, and nobody converts it to requests per minute.
+
+1190|Auto scaling is trusted after the data centre has no free CPUs.
+
+1191|A far region is used, and the extra delay is blamed on the model.
+
+1192|Each CPU has its own disk, so the status check cannot see the order.
+
+1193|A golden freezes today's count. Tomorrow the database says 10.
+
+1194|Check: 100 requests finish together in 5 minutes. What is the throughput? 20 per minute. Is the load the head count? No. Who fixes the slow code? The developer, after the test names the box.
+
+1195|Day 29 — One browser is one user. JMeter is the crowd.
+
+1196|Today starts JMeter. Response time and throughput stay the two numbers. Tokens come later.
+
+1197|1. Average time, and the rate
+
+1198|100 requests start together
+
+1199|→ all responses back in 5 minutes
+
+1200|→ average response time about 5 minutes
+
+1201|→ throughput 20 requests per minute
+
+1202|One call may take 2 minutes and another 8. Report the average. If nobody names a unit, throughput is requests per minute (RPM). Keep the units together. 5 minutes is 300 seconds. 20 per minute is about 0.33 per second.
+
+1203|TPS is transactions per second: login, order, open a product. RPS is requests per second. He treats the names as the same idea. TPS just names the action.
+
+1204|Users are still not the load.
+
+1205|10 users, each call 1 second, no pause → 10 per second
+
+1206|same 10 users, then each waits 1 second → 5 per second
+
+1207|The wait changed. The head count did not.
+
+1208|2. What JMeter is for
+
+1209|Five laptops can pretend to be five users. That falls apart at 10,000 or 1 lakh. Postman, Selenium, and Playwright are one user. JMeter, LoadRunner, and StormRunner can be many. A scroll is easy in Playwright and hard in JMeter. For this AI work he stays on HTTP, WebSocket, and JSON.
+
+1210|3. Get it open
+
+1211|java -version → JDK 21 for this batch → restart → check again
+
+1212|Apache JMeter binaries zip, not the source
+
+1213|→ extract → bin → jmeter.bat (not jmeter-server)
+
+1214|There is no installer. The jar sometimes fails; the batch file opens it. He guessed Java 14 or 15 as a floor and said skip 25 and 27. Keep about 4 GB of RAM free. With that, a real app may only carry about 10 to 20 users. His crore cloud bills are stories. The point is the money saved, tokens included.
+
+1215|4. First script on the shop
+
+1216|Place an order → Network → Copy as cURL (bash)
+
+1217|Test Plan → Thread Group (select the group, not the plan)
+
+1218|→ Tools → Import from cURL
+
+1219|Add View Results Tree and Summary Report
+
+1220|Green arrow = run
+
+1221|A thread group sets users, loops, and duration. One user and one loop send one request. Ten and ten send 100. Body Data is the body. The header manager holds the headers. The first order failed with no login. The session id is in the cookie. The cookie manager was not finished. BlazeMeter and a HAR file were named only.
+
+1222|One small flow after a restart. He said this single pass is not a real load result:
+
+1223|login ................ about 200 ms    (normal API)
+
+1224|product list ......... fast            (normal API)
+
+1225|place order .......... about 12.7 s    (AI agent)
+
+1226|verify status ........ fast            (normal API)
+
+1227|cancel order ......... about 6.4 s     (AI bot)
+
+1228|The slow rows are the AI calls. Place order is slow because several tools run. He said 5 to 10 seconds can be fair for a full place-order. MacBook Air stopped for human approval, the same as in the browser. Correlation, parameterization, and token logs come next. Know which layer adds the time: tokens, backend, or tools. Grafana or AppDynamics show numbers the logs already hold. You still use them.
+
+1229|Azure signup did not finish. Tomorrow is Aman: own LinkedIn, a new Gmail, a Microsoft account from that Gmail, and a card never used on Azure. Not the Isha login. A fresh account, he said, gets the larger credit. Those amounts are his class line.
+
+1230|Say this in an interview
+
+1231|"I would report average response time and throughput in the same unit. I would add the user's wait and measure the rate again. I would send the crowd from JMeter, login before the order. I would separate a normal API from an AI call that runs several tools, and I would log the tokens."
+
+1232|Words to remember
+
+1233|RPM — requests per minute, when nobody names a unit.
+
+1234|TPS — transactions per second, a named action.
+
+1235|Thread group — users and loops.
+
+1236|Listener — the response and the time.
+
+1237|Think time — the user's pause. It lowers the rate.
+
+1238|What can fail
+
+1239|5 minutes is written as every call's time. It was the average.
+
+1240|Minutes and seconds are mixed in one sum.
+
+1241|A 1 second wait is added, and 10 per second is kept.
+
+1242|The source zip is downloaded, or jmeter-server is opened.
+
+1243|cURL is imported with the test plan selected, not the thread group.
+
+1244|Place order runs with no login.
+
+1245|12.7 seconds is blamed on the model. Several tools ran.
+
+1246|One request is called the throughput of the app.
+
+1247|Check: 100 requests finish together in 5 minutes. What is the throughput? 20 per minute. Ten users, 1 second per call, then a 1 second wait. What is the new rate? 5 per second. Which shop calls were the AI calls? Place order and cancel.
+
+1248|Day 30 is next. I’ll read the transcript and write one page in the same style.
+
+1249|Day 30 — Point the shop at GPT 5.4 mini on Azure
+
+1250|Today is setup. JMeter waits. The shared config.py has no key. His own file does. Everyone deploys the same model. Scripts go in the drive folder JMeter, Grafana, Chrome.
+
+1251|1. The account, then stop
+
+1252|New Gmail → Microsoft account
+
+1253|→ LinkedIn login (have the password)
+
+1254|→ address and card check
+
+1255|→ stop before "verify your business"
+
+1256|→ Microsoft Foundry
+
+1257|The normal signup, he said, is about $200. A new email, a new card, and a new LinkedIn login can show more. Later he also said about $5,000 or $1,000 around a business check. Those amounts are his class lines, and they clash. He then said stop before that check and open Foundry on the credit already showing. Wait for his note on Aman.
+
+1258|Stop sharing before the card number. Read the bank message. He said the check is about 2 rupees and comes back in about a week. Extra clicks can bill the card.
+
+1259|2. Deploy 5.4 mini
+
+1260|Foundry → Create a resource
+
+1261|→ one subscription only (the free one)
+
+1262|→ resource group, small letters, no spaces
+
+1263|→ East US → Review + create (no red errors)
+
+1264|Old Foundry view (switch the new view off)
+
+1265|→ Models + endpoints → Deploy base model
+
+1266|→ GPT-5.4-mini
+
+1267|The resource, and its data, sit in that region. A free account does not get every model. Nano had no quota. Mini did. Leave the rate limit where it is. He showed about 150 requests a minute and a token cap, with a ceiling near 1 million tokens a minute. Do not raise it.
+
+1268|His price line was about $5 for 1 million tokens. An agent call can spend tens of thousands of tokens on one question. When the credits end, the calls stop. Every figure here is a class example.
+
+1269|3. Prove the call, then the shop
+
+1270|Playground → View code → curl, key auth (not Entra)
+
+1271|Postman → import the curl → paste the key in headers
+
+1272|→ rename the limit field to max_completion_tokens
+
+1273|→ an answer comes back
+
+1274|config.py → model GPT 5.4 mini
+
+1275|→ URL only through /v1
+
+1276|→ API key → save → start-demo again
+
+1277|The sample from Azure can be behind the live API. That rename is the fix he made. The Foundry deployment is the door to the model. Delete the deployment and this call dies. Each hit spends the credits.
+
+1278|The shop must do more than talk. His place-order called search products, then availability, then place order. A green mark means the model is connected. The app will not fit every model. This one worked on mini. They had been on nano.
+
+1279|4. Fallback is a program
+
+1280|He broke the key on purpose and restarted. The screen said the action was done by the local fallback, and the error was an invalid subscription key. Fallback matches the exact words and places the order. There is no model in that path. With the model connected, the wording can vary. If you see fallback, check the endpoint and the key.
+
+1281|5. Do not fine-tune a changing fact
+
+1282|Surendra asked about fine-tuning this base model. If the model allows it, you get a new URL still inside Azure. You do not receive the weights. He is not sure 5.4 can be tuned. He said a tuned copy costs more for a change RAG or a tool can do live. His line that OpenAI has closed that door is his picture. Fine-tune, in his words, was for a stable tone or a policy that sits still for a year. RAG and agents are the common shape.
+
+1283|Say this in an interview
+
+1284|"I would deploy the model the team agreed, smoke it in Postman, then point the app at that endpoint and restart. I would check that place-order really called the tools. If the screen says local fallback, I would treat that as no model and check the key. I would put a changing fact in a tool or in RAG."
+
+1285|Words to remember
+
+1286|Foundry deployment — the named model you call, and pay for, on Azure.
+
+1287|max_completion_tokens — the limit field the sample may still get wrong.
+
+1288|config.py — model, URL through /v1, and the key. Restart after a save.
+
+1289|Local fallback — a fixed program. Exact words only. No model.
+
+1290|Fine-tune — a new endpoint for stable facts. A live catalog belongs in RAG or a tool.
+
+1291|What can fail
+
+1292|Business verification is started before he confirms it.
+
+1293|Two subscriptions appear, and the free one is not the one in use.
+
+1294|Nano is deployed. This class had no quota. The shared model is 5.4 mini.
+
+1295|The sample still says max_tokens, so the Postman call fails.
+
+1296|The full chat path is pasted into config.py. He stopped the URL at /v1.
+
+1297|The shop is not restarted, so it still holds the old key.
+
+1298|Fallback text is trusted as the model.
+
+1299|Check: Which model does the class share? GPT 5.4 mini. Where does the shop URL stop? /v1. The screen says local fallback. Is the model in that path? No. Place order succeeded. What else must you see? Search, then availability, then place order.
+
+1300|Day 31 — Script the path the model can hurt
+
+1301|JMeter continues, aimed at the AI path. The Ollama shop build is not on the drive yet. A draft can use the local fallback. Tokens need the real model.
+
+1302|1. Same steps, one script
+
+1303|Flow 1: login → browse → cart → checkout → place order
+
+1304|Flow 2: browse → login → cart → place order
+
+1305|Flow 3: login → browse → Buy Now → pay → place order
+
+1306|Flow 1 and flow 2 are the same transactions in a different order. Flow 3 adds Buy Now and skips the cart. His split was 70 users on flow 1 and 30 on flow 2. Test flow 1, not both. Test flow 3 too, or a slow Buy Now never gets a script. Scripting only Buy Now misses the cart.
+
+1307|Two rules:
+
+1308|Cover every business-critical transaction and every high-load one.
+
+1309|If two flows share the same transactions, keep the one real users follow. Use production numbers, a competitor, or a rough guess when you have no logs.
+
+1310|Twenty flows might become five to eight scenarios. That count is his example. Each one is its own script, or its own thread group.
+
+1311|2. Load is not the same as panic
+
+1312|Browse products .... 100 TPS   high load
+
+1313|Place order ........ 10 TPS    lower load, still critical
+
+1314|Add a card ......... 1 TPS
+
+1315|Delete a card ...... 0.1 TPS   skip, unless someone insists
+
+1316|People browse and leave. Delete-card is a sliver of that load, so skip it unless someone insists. This pass is not the functional pass, and each extra scenario needs data.
+
+1317|Critical is not the same as busy. Place order is only 10 TPS, and the money has already moved. He ranks a failed order above a failed login. A browse that works on reload is lower.
+
+1318|3. The AI filter
+
+1319|Keep a scenario when the model changes it, directly or through the code around it. The performance team already runs the plain place-order. They put a mock where the model sits: send A, receive B, and a new sentence gets nothing. That mock is the same idea as the shop fallback. Your run uses the real model.
+
+1320|Perf: mock model, bigger lab, his picture 100 users, about 1 hour
+
+1321|AI:   real model, staging, his picture 10 users, about 15 minutes
+
+1322|Staging is smaller, so you scale down. A one-user run is not a load test. His thumb rule was about half of production for a perf lab and about a tenth of the users for the AI run. Cost decides. He pictured about five to seven AI scenarios out of 30 or 40. Scope it. Do not absorb the other suites.
+
+1323|The old API can be the same call. The new code between the model and that API can be the slow piece. A wrong sentence belongs to the behaviour check.
+
+1324|From the questions
+
+1325|A perf lab is scaled too. His picture was 100 production CPUs down to 10, and the user count drops with them. Staging keeps a real database and a smaller data set. A mock draft is fine until the live sentence changes and the correlation breaks. No logs: use the requirement, or old logs. He cited about 15 seconds on the shop place-order. Workload modelling is next. Aman's business check failed, so stay on the $200. If 4.1 runs the shop, use it. Set this deployment to about 60 requests a minute before a load run. Azure tokens are the model call only. You can run two local models: the shop, and the smallest as the judge. The Ollama shop upload is still pending.
+
+1326|Say this in an interview
+
+1327|"I would keep one script when the steps match, and add a script when a step is new, such as Buy Now. I would cover place-order even when browse is busier, and I would skip a tiny flow unless the business named it. I would run the real model on a short, smaller test, and leave the mock run to the performance team."
+
+1328|Words to remember
+
+1329|Scenario — a shortlisted flow. One script, or one thread group.
+
+1330|TPS — transactions per second. The load on that step.
+
+1331|Business critical — failure hurts the user or the brand, even at low TPS.
+
+1332|Mock — a fixed answer. The model is not in that run.
+
+1333|Scale down — fewer users because the lab, and the token bill, are smaller.
+
+1334|What can fail
+
+1335|Flow 1 and flow 2 are both scripted, and Buy Now is skipped.
+
+1336|Delete-card is scripted, and place-order is dropped because browse has more TPS.
+
+1337|The AI tester repeats the plain place-order the performance team already runs.
+
+1338|One hundred real-model users are launched because the perf lab used one hundred.
+
+1339|A correlation is tied to one mock sentence.
+
+1340|Shop code time is counted as Azure tokens.
+
+1341|Check: Flows 1 and 2 match. How many scripts? One, the popular one. Buy Now is new. Do you add it? Yes. Delete-card is 0.1 TPS and nobody called it critical. Do you script it? No. The perf lab used a mock for an hour. What do you change? Real model, fewer users, shorter run, on staging.
+
+1342|Day 32 — More users should raise the rate, not the wait
+
+1344|The Ollama shop build is fixed. The demo folder will hold GPT 5.4 mini and Ollama with Qwen 2.5 3B. No Azure account means the Ollama copy. It runs on your machine, so it is slower: his runs were about 20 to 30 seconds, and one order took about a minute. Start WSL and Ollama, then the shop. He ran the live demo on GPT so the class could finish.
+
+1346|1. Pull one call into JMeter
+
+1348|Postman → Code → cURL → copy
+
+1349|Thread Group selected
+
+1350|→ Tools → Import from cURL
+
+1351|→ HTTP Request + Header Manager
+
+1352|Add View Results Tree and Summary Report
+
+1353|Green start = run
+
+1354|The HTTP Request is the sampler. The header manager holds the headers. Body Data is the body. A UI recording is the BlazeMeter plugin. He named it and did not use it. The cookie manager is later.
+
+1356|2. Users, rate, and the wait
+
+1358|1 user, about 0.9 seconds, plus a wait
+
+1359|→ about 16 to 32 calls a minute
+
+1360|3 users, same wait
+
+1361|→ about 48 a minute
+
+1362|→ response time still about the same
+
+1363|With no wait, 0.9 seconds is near 60 calls a minute. They saw fewer because he added a delay, about 1 second and then 3, to stay under yesterday's Azure cap of about 60 requests a minute. The 60k figure was tokens.
+
+1365|More users should raise throughput. If the rate stays flat, the application is the bottleneck, a neck that lets 10 through when you send 100. Response time does not have to climb with the first extra users. Four cooks still serve four people in a minute. The fifth waits.
+
+1367|3. The timer is not the server
+
+1368|One start keeps the timer. The other start ignores it. The timer is the user waiting. His average stayed near 900 milliseconds while the timer was 3 seconds. The rate falls. Those 3 seconds are not inside the 900.
+
+1370|Read average, throughput, and error percent. Samples are how many calls reached the server.
+
+1373|10 calls, 1 comes back 500 → 10% errors
+
+1374|A busy app: about 99% should pass
+
+1375|Pass here is 200. He also called 204 a partial success. 500 and 504 are failures. On a tiny flow, even 1% wrong can be too many. Above roughly 10 or 20 transactions a second, about 1% is his thumb rule. The yellow mark is a JMeter error. A red run means something failed. Cross the Azure cap and the tree shows a rate-limit error.
+
+1377|4. One loop, one speed
+
+1378|A fast call and a slow Ollama call in the same thread take turns. The next loop waits for the slow call, so both rows show a similar rate. The slow step dragged the script. A different rate on each call comes later. One flow stays in one thread group.
+
+1380|Infinite loop plus a duration runs for that time. Loop count 1 means each user goes once. Five users means five samples. Infinite with no duration runs until you press stop. Disable a call to leave it out.
+
+1382|Ollama stopped meant 100% connection errors, because WSL was down. Watch CPU and RAM on WSL. More users push that toward 100%. His ceiling was about four or five users. First, name the waste, such as a loop that runs 100 times and could run once. A small drop in use means more users on the same machines, and that is money saved. You name the slow API. The developer changes the code. You do not retune the provider's model. Skip a stress test on GPT. It spends tokens, and the performance team already stresses the mocked path.
+
+1384|Say this in an interview
+
+1385|"I would import the cURL and read average, throughput, and error percent. I would expect the rate to rise when I add users, and a flat rate would be a bottleneck in the app. I would keep the user's wait out of the response time. I would stop under the provider's cap, and I would keep one flow in one thread group."
+
+1387|Words to remember
+
+1388|Throughput — calls per minute. It should rise with users.
+
+1389|Bottleneck — the narrow part that refuses the extra calls.
+
+1390|Timer — the user's pause. It lowers the rate. It is not server time.
+
+1391|Error percent — non-200 calls. About 1% is his busy-app thumb rule.
+
+1392|Loop — one pass through the calls in that thread group.
+
+1393|What can fail
+
+1394|The rate stays flat, and JMeter is blamed.
+
+1395|A 3 second timer is added into the 900 millisecond average.
+
+1396|10% errors are accepted on a tiny flow.
+
+1397|A fast call and a slow call share a loop, and the fast API is called slow.
+
+1398|Loop count stays at 1 during a one-minute run, so each user goes once.
+
+1399|Infinite is left on with no duration.
+
+1400|Ollama is off, and the connection errors are read as bad answers.
+
+1401|Two flows sit in one thread group.
+
+1403|Day 33 — Record the flow, then feed it from a file
+
+1404|A flow is easier to record than to build call by call. You miss fewer steps. The shop registration in this class did not need the model.
+
+1405|1. BlazeMeter writes the script
+
+1406|Chrome Web Store → BlazeMeter → pin it → sign in
+
+1407|Before Record, all three on:
+
+1408|disable browser cache
+
+1409|wipe service workers
+
+1410|record Ajax
+
+1411|Name the scenario → Start → name each step → do the clicks
+
+1412|Stop → Save → JMX → drag it into JMeter
+
+1413|Ajax must be on for the shop. Name a step, then click. Keep sign-in and place-order. Disable the other GETs, add the two listeners, and run. If the order succeeds, delete them. If it fails, turn the missing call back on. Turn on Generate parent sample, or the summary prints the group twice.
+
+1414|Registration is the same plugin. Keep only the register call. Inspect the app first. The first email already existed, so it failed. A new email passed. Then log in on the shop. Do not trust the JMeter row alone.
+
+1415|2. One value, many places
+
+1416|User Defined Variables: port = 8000
+
+1417|In the request: ${port}
+
+1418|CSV columns name, password, phone
+
+1419|In the body: ${name}  ${password}  ${phone}
+
+1420|Change it once at the top. Every ${port} follows. Do this when the value repeats: the host, a header, a key. BlazeMeter already turned the host into a variable. From dev to perf the paths stay. The host changes. If the paths changed, you would be testing a different app. A header manager above the thread group is inherited by every call.
+
+1421|3. Test the first visit
+
+1422|Images and scripts run on each laptop. The crowd still hits one server. Leave Retrieve embedded resources off. Those files also eat the machine running JMeter. Extra machines for a huge crowd are load generators. An AI run usually stays on the laptop.
+
+1423|Cache can make a 5 second first visit look like 2 seconds. Add an HTTP Cache Manager and tick Clear cache each iteration, unless this app must keep the cache. Clear cookies each iteration too, or the next loop is a user who is already signed in.
+
+1424|4. The file decides when to stop
+
+1425|CSV Data Set Config points at the file. Column titles are the variable names. One user and one loop is the smoke: the first row must show in the request, and the account must exist. Edit that row before the full run. It is already used.
+
+1426|Recycle on end of file = false
+
+1427|Stop thread on end of file = true
+
+1428|10 users, loop = infinite, no duration
+
+1429|Registration must not return to row 1. A login run may. A duration cuts the file short. Duration is for a load test that reuses rows, such as 30 minutes. His 100-row run stopped by itself in about 4 seconds, near 21 per second. Stay at or under 10 users. A thread is not a named person.
+
+1430|Error percent 0 means all 100 registered. Remove failed rows before that file is used to log in. Otherwise you blame place-order. The defect should come from the load. If the domain was typed beside the name, put the whole address in the column. The ${} names must match the titles.
+
+1431|From the questions
+
+1432|You cannot skip calls while recording. Keep the one that matters. Error paths, a dead network, OTP, and reCAPTCHA are not this test. Turn them off. If one user can cause the bug, it is functional. If only a crowd can, it is performance. BlazeMeter fits the shop because of Ajax. If the plugin is blocked, use cURL or a HAR file. An example SLA: 100 transactions a second, under 5 seconds. A user count still has to become a rate. Correlation is next. No class on the 5th and 6th. The class resumes on the 7th.
+
+1433|Say this in an interview
+
+1434|"I would record the flow, keep only the calls that define it, and prove one new user can log in. I would put repeating values and the user file in variables. I would clear cache and cookies each loop so I measure a first visit. I would stop when the file ends, and I would drop any row that did not register before I reuse it."
+
+1435|Words to remember
+
+1436|JMX — the recorded script file.
+
+1437|${name} — a variable. The CSV column title is the name.
+
+1438|Generate parent sample — one summary row for a group of calls.
+
+1439|Clear cache each iteration — measure the first visit.
+
+1440|Recycle false, stop thread true — one pass through the file, then stop.
+
+1441|What can fail
+
+1442|Every GET from the recording is left in, and the script is called the scenario.
+
+1443|The same email is registered twice, and the failure is called a load bug.
+
+1444|Cache stays on, and a 5 second call is reported as 2.
+
+1445|Recycle stays true, so registration reuses row 1 and fails.
+
+1446|A duration stops the run before the last row.
+
+1447|A 10% error is ignored, and those rows are used to log in.
+
+1448|OTP or captcha is left on, and the script cannot pass it.
+
+1449|Check: The host is in ten places. Where do you change it? Once, in the variable. Registration has 100 new rows. Recycle? False. Stop thread? True. Do you set a duration? No. Error percent is 10. What do you do before place-order? Remove the rows that did not register.
+
+1450|Day 34 — Take the next product from the last response
+
+1451|Last class registered about 100 users from a CSV. Today those same users log in and place orders. He used the GPT shop, because Ollama is too slow for a live demo. A new shop folder is still coming. The shared zip used his Python path. Do not invent that fix. Do not point JMeter at a live site such as Amazon. Many users from one address get the IP blocked. A test app does not.
+
+1452|1. Two thread groups, one file
+
+1453|Registration thread group   (disabled once the users exist)
+
+1454|Place-order thread group    (enabled)
+
+1455|login → product list → AI place order → verify status → AI cancel
+
+1456|name and password come from the same CSV
+
+1457|Right-click a thread group to disable it. A disabled group does not run. Both can be enabled if you truly want them together. Recycle on end of file stays false and stop-thread stays true for registration, so a second run mostly reports "email already exists" and creates only a missing user.
+
+1458|Login and product list are ordinary calls. Place order and cancel are the AI calls. The product list was returning about 26 products. A huge body freezes JMeter, so he cut the limit to about 5. That count is this demo.
+
+1459|2. Correlation
+
+1460|A real shopper does not order the same Samsung on every loop. The catalogue can change while the test is running. Copying one name into the script is static. Correlation takes a value from an earlier response and puts it in the next request.
+
+1461|Product list response
+
+1462|→ JSON Extractor (post processor)
+
+1463|→ variable c_product_name
+
+1464|→ place-order body uses ${c_product_name}
+
+1465|JSON, regular expression, and boundary extractors exist. For AI work, use JSON. Paste the response into a coding tool and ask for the expression for the name field. Keep the path, not a sample value.
+
+1466|Name it c_product_name. C means correlated. P means parameterized. Match number 1 takes the first match. Match number 0 picks any match at random each loop, so one loop ordered a speaker and the next ordered something else. If nothing is found, the variable is set to the word default and you can see the extract failed.
+
+1467|A Debug Sampler lists the variables for that loop. Turn it off for the real run, and turn off Results Tree. Listeners use memory. Leave the Summary Report on. The same idea captures a login token or a session id. Extract a message id only when the call fails without it.
+
+1468|3. Prove the order is really stored
+
+1469|The bot can say "order placed" while the database has no row. Verify-order exists for that check.
+
+1470|AI place order response → JSON Extractor → order id
+
+1471|→ Response Assertion on verify-order: that id must be in the body
+
+1472|→ AI cancel uses the same ${order_id}
+
+1473|A Response Assertion looks in the body. The word "products" passed. A wrong word failed on purpose. The same box accepts a variable. Cancel uses that id so a long run does not pile up orders. Some products need a person to approve them, so no order id is created and verify fails. That miss is the approval rule.
+
+1474|4. What the 7.6 seconds means
+
+1475|He ran about two users for about a minute, with a one-second timer. Early throughput is a rough guess. Wait about 5 to 10 minutes before you trust the rate. On this short pass, place order averaged about 7.6 seconds, verify about 16 milliseconds, and cancel about 4.2 seconds. Only place and cancel are AI. A person would add to cart, check out, pay, then place. The agent does those steps inside one request. Do not call the model slow from 7.6 seconds alone.
+
+1476|LangSmith trace of one place-order
+
+1477|model → search products → model → place-order tool → model → the sentence
+
+1478|He saw steps around 2.4, 2, and 1.9 seconds. Cut a second on each and the user waits less. Your organisation may use another trace tool. The performance team scripts the old four calls and mocks the model. They do not read tool-calling steps or LangSmith. That reading is the AI tester's job. With more users the average rose. Postman is one user, so its time is lower. "5 seconds" is not an SLA until they also give the throughput.
+
+1479|Next class logs tokens to a file, then to Prometheus and Grafana. Prometheus stores the series. Grafana draws it. A custom token line is yours to add. The scripting that captures tokens needs this correlation first.
+
+1480|Say this in an interview
+
+1481|"I would not hard-code a product name. I would extract it from the product list and pass it into place-order. I would assert the new order id, then cancel with that same id. I would read the trace before I say the model is slow. I would take both the time and the throughput from the requirement."
+
+1482|Words to remember
+
+1483|Correlation — a value taken from one response and sent on the next request.
+
+1484|JSON Extractor — the post processor that pulls a field out of JSON.
+
+1485|Match number 0 — any match, chosen again each loop.
+
+1486|Response Assertion — fails the sample if the expected text or variable is missing.
+
+1487|Debug Sampler — shows the variables for this loop. Turn it off for the real run.
+
+1488|What can fail
+
+1489|The same product name is pasted into every loop.
+
+1490|The variable stays "default", so the extract failed.
+
+1491|The bot says the order is placed, and the id is never checked.
+
+1492|7.6 seconds is blamed on the model, and the trace is never opened.
+
+1493|A live site is loaded from JMeter, and the IP is blocked.
+
+1494|Check: Where does the product name come from? The product-list response. Match number 0 does what? It picks a different product each loop. The status call must contain which value? The order id from place-order. The SLA says 5 seconds. What else must it give you? The throughput.
+
+1496|Day 35 — AI Testing: Assertions, Throughput and Little’s Law
+
+1497|1. UAT in the AI testing lifecycle
+
+1498|UAT validates real business flows with business users. It should not be the first stage for heavy automation, load testing, or deep engineering. Before UAT, core functionality, AI-quality checks such as hallucination checks, integration testing, and basic performance benchmarking should be available.
+
+1499|Typical flow: Functional testing → AI quality/integration testing → Performance testing → UAT → Production monitoring. In real projects, stages can overlap. UAT may run in parallel with performance testing because of schedule or budget pressure. Automation may be complete while full CI/CD implementation happens after UAT.
+
+1500|Interview line: “I follow the planned sequence but allow overlap when needed. Core functionality, integrations, AI-quality checks, and baseline performance should be available before UAT.”
+
+1501|2. Dynamic values and correlation
+
+1502|A product name returned by a product-list request is dynamic because it can change based on the request or database. A fixed response field is static. Login data and request parameters should be parameterized instead of hard-coded so different virtual users can use different data.
+
+1503|Correlation extracts a value from one response and uses it in a later request:
+
+1504|Product-list response → JSON Extractor → c_product_name → place-order request uses ${c_product_name}
+
+1505|Common dynamic values include product name, product ID, order ID, and user ID. Parameterization supplies different input values; correlation passes generated response values between requests.
+
+1506|3. Assertions: HTTP 200 is not business success
+
+1507|HTTP 200 only means the request was processed at the HTTP level. An AI agent can return 200 and still say, “Which product would you like me to order?” The request is technically successful, but the order business flow failed.
+
+1508|Use a JMeter Response Assertion to check the expected business result. Useful checks include response text, response code, and response headers. For an order, assert text such as “order placed successfully,” confirmed status, payment method, shipping address, or order details. Prefer a reliable condition and use Contains when appropriate.
+
+1509|Every important request should have an assertion. In a 10,000-transaction test, assertions can identify 100 business failures automatically instead of requiring manual response inspection.
+
+1512|Day 35 — Performance Control and Feasibility
+
+1513|4. Constant Timer versus Constant Throughput Timer
+
+1514|A Constant Timer adds a fixed delay. A timer placed at the top of a thread group can affect every request under that scope; one inside a transaction affects only that transaction. This delay acts as think time.
+
+1515|A Constant Throughput Timer receives a target rate, such as 50 requests per minute, and JMeter calculates the delay needed to approach it. Example: 4.6 requests per second × 60 = 276 requests per minute. Run a throughput test long enough for it to settle—Vishnu suggested roughly four or five minutes, or at least two to three minutes.
+
+1516|Constant Timer: fixed delay → indirectly controls throughput. Constant Throughput Timer: target rate → JMeter calculates delay.
+
+1517|5. Workload modelling and AI limits
+
+1518|Business flows normally have different usage levels. For example, place order, browse products, and update account may run together, and login may exist in all three thread groups. If the overall login SLA is 20 TPS, giving 20 TPS to every group could create about 60 TPS. Divide the target according to the expected distribution.
+
+1519|A workload model can use production logs, business expectations, SLA targets, user distribution, model rate limits, and token limits. For AI testing, this prevents unrealistic traffic and helps control token consumption.
+
+1520|6. Little’s Law
+
+1521|Little’s Law helps calculate users, throughput, or think time and can be used before the JMeter script is complete:
+
+1522|User count = Throughput × (total response time + total think time) ÷ transactions per user cycle
+
+1523|Keep units consistent. If throughput is per minute, response and think time must be in minutes; if throughput is per second, use seconds.
+
+1524|Inputs: user count, throughput, number of transactions, total response time, and total think time. In the class example, approximately 20.2 per minute, three transactions, six seconds of response time, and one second of think time produced roughly 2.5 users for a target near 60 per minute, so three users were used.
+
+1525|Feasibility example: one transaction taking one second with a target of 200 TPS requires about 200 users. If the environment or license allows only 100 users, the target is not feasible. Little’s Law can reveal this during test planning, even before scripting.
+
+1526|Interview line: “I use the workload model and Little’s Law to check whether users, response time, transaction mix, and throughput are feasible before execution.”
+
+1527|7. What can fail
+
+1528|·       HTTP 200 but business failure: add a business-level Response Assertion.
+
+1529|·       Hard-coded data: use CSV parameterization and correlation.
+
+1530|·       Throughput above SLA: divide traffic across thread groups.
+
+1531|·       Unstable throughput: run longer and ignore the warm-up period.
+
+1532|·       Wrong result: keep all formula units consistent.
+
+1533|·       Impossible target: calculate required users before running the test.
+
+1534|Quick check
+
+1535|Why can HTTP 200 still mean order failure? What is the difference between the two timers? Should every thread group receive the full shared login SLA? What values are required by Little’s Law?
+
+1536|Expected answers: HTTP 200 is transport success only; one timer adds fixed delay while the other targets a rate; shared SLA must be distributed; and the formula needs users, throughput, transactions, response time, and think time.
+
+1538|Day 36 — JMeter Synchronization, Controllers, and Token Logging
+
+1539|This class connects AI performance testing with operational analysis. The examples and numbers below are class examples; actual limits must come from the project requirement.
+
+1540|1. AI testing is coupled
+
+1541|Traditional performance testing mainly asks whether the application handles load. AI testing also checks behaviour, cost, tokens, and production operation. These areas are connected. If token usage is reduced from 150 words to 100 words, cost may improve, but the answer may become incomplete and answer relevancy may fall.
+
+1542|Behaviour testing ↔ Performance/cost testing ↔ Production monitoring → change in one area → regression in the other areas
+
+1543|Whenever the model, prompt, token limit, parameters, tool response, or important configuration changes, repeat the behaviour cases that could be affected. If only a safe configuration change was made and it cannot affect behaviour, full retesting may not be needed—but the impact should be considered.
+
+1544|2. AI performance testing is usually scaled down
+
+1545|The performance team may run a broad test with a mock model in a larger performance environment. The AI tester focuses on the real model and AI path, often in staging or pre-production with fewer users. Vishnu’s example was a performance test with 100 users and an AI test with about 10 users. This is a class guideline, not a universal rule.
+
+1546|Traditional performance test: broad flow + mock AI + larger environment. AI performance test: real model + AI tools + smaller controlled load.
+
+1547|The goal is to observe real token usage, tool calls, latency, and behaviour without creating unnecessary model cost. Do not assume that a mock performance result proves the real AI path is healthy.
+
+1548|3. Synchronizing Timer
+
+1549|A Synchronizing Timer makes a group of virtual users wait and then releases them together. Without it, users progress independently. Both tests may show the same TPS, but the traffic pattern is different.
+
+1550|Normal test: User 1, User 2, User 3 → progress naturally. Synchronizing Timer: User 1 + 2 + 3 wait → all start together.
+
+1551|Normal independent traffic is usually more realistic. A synchronized release is useful for a spike test or a situation where many users really act at the same instant, such as a token-generation event. It should not automatically be used for every performance test.
+
+1552|The timer’s “number of simulated users to group by” controls the batch size. For example, grouping by 10 releases users in groups of 10. A timeout controls how long JMeter waits for the group. If the users do not arrive within that time, JMeter releases the users it has.
+
+1553|4. Controllers
+
+1554|Controllers control when and how samplers or requests execute.
+
+1555|·       Loop Controller: repeats the requests inside it. If login is set to five loops, each user performs login five times before moving on.
+
+1556|·       If Controller: runs its requests only when a condition is true, such as an approved message or a valid order ID.
+
+1557|·       Throughput Controller: controls the percentage or number of executions across a group of requests.
+
+1558|Example: if login should be 70% of the traffic and product list 30%, place each flow under a Throughput Controller with those percentages. The percentages come from the workload model.
+
+1559|5. Throughput Controller versus Constant Throughput Timer
+
+1560|A Constant Throughput Timer targets the rate of an individual request or transaction. A Throughput Controller distributes execution across a group of requests. The timer controls how often; the controller controls which requests receive the traffic.
+
+1561|Constant Throughput Timer → target rate for a request. Throughput Controller → percentage distribution between flows.
+
+1563|6. Capture token and latency values
+
+1564|The AI response may contain input tokens, output tokens, total tokens, estimated cost, latency, order ID, and a message. Use JSON Extractors to capture these fields into JMeter variables.
+
+1565|AI response → JSON Extractor → input_token, output_token, total_token, cost, latency, order_id → write to CSV or create a report
+
+1566|These fields must be returned by the application API or obtained through an approved monitoring tool. They are not created by JMeter. The same API response can be inspected using JMeter, LoadRunner, StormRunner, or NeoLoad.
+
+1567|7. BeanShell and JSR223
+
+1568|A BeanShell PostProcessor can write extracted variables to a file. A JSR223 PostProcessor can run a Groovy script for the same type of logging and report generation. A script can write only failures, add a serial number, include an error message, or create an HTML report.
+
+1569|Extract variables → PostProcessor script → CSV/log/HTML report → analysis
+
+1570|Use the JMeter log while testing. Warnings may be acceptable, but errors must be investigated. If a file is not created, the log can show the path or script problem. Keep file paths and variable names correct.
+
+1571|8. Analyse anomalies
+
+1572|A report may show most transactions using 2,000–2,300 tokens, while a few use 8,000. Those outliers can increase cost and latency. If the response time crosses the SLA, use the order ID, product, tool trace, and message to investigate the specific transaction.
+
+1573|·       High input tokens: too much product or tool data was sent to the model.
+
+1574|·       High output tokens: the model produced an unusually long answer.
+
+1575|·       High latency: extra tokens, slow retrieval, repeated tools, or another backend component may be involved.
+
+1576|·       Missing order ID or zero tokens: the order may have failed, tracing may be incomplete, or the response path may be wrong; investigate rather than assuming the cause.
+
+1577|9. Architecture solution: summarize once and reuse
+
+1578|If product details are 50 to 200 words, passing the full text every time can increase input tokens. A better design is to summarize the product once when it is added, store the short summary in a normal database, and retrieve that summary whenever the AI needs it.
+
+1579|Product added → Create short AI summary once → Store summary in SQL database → Retrieve summary for future AI requests → Lower input tokens, cost, and latency
+
+1580|The detailed product description can still be kept for the user interface. This avoids paying for the same summarization repeatedly.
+
+1581|10. SQL database versus vector database
+
+1582|Use SQL when the data is structured and the query is clear, such as product ID, order ID, or customer ID. Use a vector database when users search by meaning or natural language and the system must find similar content.
+
+1583|Structured relation and exact filter → SQL database. Meaning-based document search → Vector database.
+
+1584|Vector storage normally requires converting data into embeddings before storing it, which adds cost and maintenance. AI testers do not normally build embeddings or databases, but they should understand the purpose so they can identify the likely owning team and retest after a fix.
+
+1585|11. Tester to solution recommender
+
+1586|The class gave four steps:
+
+1587|·       Identify the problem through testing.
+
+1588|·       Understand the real root cause and business impact.
+
+1589|·       Use architecture and technology knowledge to propose a solution.
+
+1590|·       Record the root cause and fix so the organisation can reuse that knowledge.
+
+1591|This is the difference between only reporting a failure and thinking like a test architect. Speak with the developer or data engineer after a bug is fixed so you understand why it happened.
+
+1592|Interview answer
+
+1593|“In AI performance testing, I correlate behaviour, tokens, latency, cost, and monitoring. I use synchronization only for true spike patterns, controllers for workload distribution, and JSON extraction plus BeanShell or JSR223 to log token and latency data. When I find outliers, I trace the request and tool data. If unnecessary context is causing cost and latency, I can recommend summarizing it once, storing the summary, and retrieving it later.”
+
+1594|What can fail
+
+1595|·       Reducing tokens improves cost but removes important answer content.
+
+1596|·       A synchronized test is mistaken for normal real-world traffic.
+
+1597|·       Throughput Controller percentages do not match the workload model.
+
+1598|·       Token fields are missing from the API response, so monitoring is incomplete.
+
+1599|·       A script writes no file because the path or variable name is wrong.
+
+1600|·       Large tool descriptions cause token and latency outliers.
+
+1601|·       A tester blames the model without checking the tool response or trace.
+
+1603|Day 37 — Prometheus, Grafana, and Custom AI Metrics
+
+1604|This class covered coding assistance with ChatGPT Codex and monitoring AI performance data from JMeter. The class installation paths, versions, and limits are examples; use the project’s approved versions and requirements.
+
+1605|1. ChatGPT Codex for project code
+
+1606|The ChatGPT desktop application can open a local project folder in Codex. Codex can inspect files, explain code, update a selected script, write new scripts, and show changed lines. Red lines represent removed code; green lines represent added code. The user should name the exact file and requested change, especially when a folder contains many scripts.
+
+1607|Install ChatGPT desktop → Sign in → Switch to Codex → Open project → Trust folder → Ask for a specific change → Review red/green diff → Test the changed code
+
+1608|Codex is a coding agent, not the normal ChatGPT website chat. It can update JMeter, Python, or Playwright files, but the tester must review the diff and run tests. Free plans may have usage limits. Do not blindly accept every generated change.
+
+1609|2. Prometheus and Grafana roles
+
+1610|Prometheus is a time-series database. It stores numeric measurements with time, such as CPU, RAM, latency, input tokens, output tokens, total tokens, and error counts. Grafana is the visualization and monitoring tool. It connects to Prometheus or another data source and displays dashboards, graphs, and alerts.
+
+1611|JMeter / application → Push Gateway → Prometheus → Grafana → graphs and alerts
+
+1612|Prometheus can show basic graph or table views, but Grafana is better for a dashboard containing several metrics at once. Prometheus stores values over time according to its retention configuration. It is not limited to JMeter; metrics can come from other tools and applications.
+
+1613|3. Why time-series data is useful
+
+1614|Performance data changes with time. For example, one record can show a timestamp and CPU value, and the next record can show a later timestamp and another CPU value. A time-series database is optimized for this type of repeated time-based data.
+
+1615|time 1 → CPU 40; time 2 → CPU 55; time 3 → CPU 72
+
+1616|A relational database such as SQL is better for structured relationships and exact queries, such as customer ID or order ID. A vector database is useful for meaning-based or semantic search. Each database type exists for a different purpose.
+
+1617|4. Installation and services
+
+1618|The demonstrated setup used a monitoring folder, Prometheus configuration, Pushgateway, and a Windows exporter. Prometheus was started from a command prompt and opened at localhost port 9090. Pushgateway was started separately. The command windows had to remain open in the local demonstration; in a real server these services may run as background services.
+
+1619|Prometheus target health should show the expected targets as up. Windows exporter supplies Windows CPU and RAM metrics. Pushgateway receives custom metrics sent by JMeter. Installation paths depend on the machine, so do not copy a class path blindly.
+
+1622|Day 37 — Sending JMeter AI Metrics to Prometheus
+
+1623|5. JMX is an XML-based script1
+
+1624|A JMeter .jmx file is an XML file. The JMeter GUI changes this XML through screens and menus. If someone safely edits the XML, values such as user count or a request can also change. This is why a coding agent can update a JMeter file. Always review the diff and open the file in JMeter to validate it.
+
+1625|6. Push custom AI metrics
+
+1626|JMeter can extract AI values from the response and push them to Prometheus through Pushgateway. A JSR223 PostProcessor can run a Groovy script. The script reads JMeter variables and sends numeric values with custom metric names.
+
+1627|AI response → JSON Extractor → input_token, output_token, total_token, latency, errors → JSR223/Groovy script → Pushgateway → Prometheus → Grafana
+
+1628|The names in the script must match the JMeter variable names. The text inside the metric definition becomes the Prometheus metric name. To add another metric, add the variable and its numeric value to the script. A coding assistant can help generate the script, but the tester must verify names and values.
+
+1629|7. What to measure in AI testing
+
+1630|·       Input tokens: amount of context sent to the model.
+
+1631|·       Output tokens: amount of answer generated.
+
+1632|·       Total tokens: combined usage.
+
+1633|·       Latency: time taken by the request or AI step.
+
+1634|·       Error count: for example, HTTP 500 failures grouped by time.
+
+1635|·       Order ID or business result: useful for investigation, but not normally a numeric Prometheus metric.
+
+1636|Prometheus metrics are numeric time-based measurements. A text message is normally kept in logs or another system. Use the metric for the count or numeric value, and use the order ID or trace ID to investigate the related transaction.
+
+1637|8. Analyse graphs and anomalies
+
+1638|If most requests use about 2,000 tokens but some use 8,000, the outliers may cost more and take longer. A graph can show token fluctuation, latency spikes, and error periods. Use the timestamp, order ID, product, tool trace, and response message to investigate.
+
+1639|Metric spike → Find time → Find request/trace → Check tool data → Identify root cause → Raise defect or recommend optimization
+
+1640|Possible causes include unnecessarily large product details, repeated tool calls, slow retrieval, a long model answer, or incomplete tracing. Do not conclude that the model is the cause without checking the request and tools.
+
+1641|9. Prometheus versus Grafana
+
+1642|Prometheus stores and queries the time-series values. Grafana connects to Prometheus and presents a useful dashboard. Grafana can show latency, total tokens, errors, and resource usage together and can alert when a threshold is crossed.
+
+1643|Prometheus = store and query time-based numbers. Grafana = display, dashboard, and alert on those numbers.
+
+1644|10. What can fail
+
+1645|·       Wrong JMeter variable name: the pushed value is empty or incorrect.
+
+1646|·       Non-numeric text is sent as a Prometheus metric.
+
+1647|·       Prometheus or Pushgateway is not running, so no data arrives.
+
+1648|·       The command window is closed in the local setup, stopping the service.
+
+1649|·       The target is down because the path or exporter configuration is wrong.
+
+1650|·       Token spikes are ignored, causing unexpected cost and latency.
+
+1651|·       A coding agent changes the wrong file or code is accepted without testing.
+
+1652|Interview answer
+
+1653|“For AI performance testing, I capture input tokens, output tokens, total tokens, latency, and failures from the API response. I use JSON Extractors in JMeter and a JSR223 script to push numeric custom metrics through Pushgateway into Prometheus. Grafana then displays dashboards and alerts. If I see an outlier, I use the timestamp and trace to find whether the cause is excessive context, repeated tools, retrieval, or the model response.”
+
+1655|Day 38 — Grafana Dashboards, Alerts, and Observability
+
+1656|This class continued Prometheus monitoring and showed how Grafana creates dashboards from a data source. The exact ports, paths, retention values, and thresholds are class examples; use the project configuration and SLA in a real system.
+
+1657|1. AI testing needs multiple angles
+
+1658|An AI tester should not look only at behaviour or only at performance. A complete view includes behaviour, response time, tokens, cost, tools, infrastructure, and production monitoring. Organisations may expect one tester to understand several of these angles, especially for AI evaluation testing.
+
+1659|Behaviour + Performance + Cost + Monitoring → Complete AI testing view
+
+1660|2. Install and start Grafana
+
+1661|Grafana OSS is the open-source edition. After installation, open the local Grafana address, sign in, and set the first password. In the class, Grafana used localhost port 3000. Prometheus, Pushgateway, the application, and any exporters must also be running for the dashboard to show useful data.
+
+1662|The local demonstration used command windows, so closing a command window could stop a service. In a real environment, services normally run in the background. Installation paths vary by machine; do not blindly copy another person’s path.
+
+1663|3. Connect Prometheus as a data source
+
+1664|Grafana cannot create data by itself. It reads data from a configured source. For this setup, Prometheus was added as the data source using the Prometheus server URL. Select the correct authentication option, save the connection, and use Save and Test. A successful Prometheus API query confirms the connection.
+
+1665|Grafana → Add data source → Prometheus URL → Save and Test → Query data
+
+1666|Grafana can also connect to SQL, InfluxDB, Graphite, Azure Monitor, and other data sources. A dashboard can contain panels from more than one source if the organisation configures them.
+
+1667|4. Create a Grafana dashboard
+
+1668|A panel is one visualisation, such as a time-series graph, number, bar chart, or table. First test the Prometheus query in Prometheus. Then use the working query in Grafana. Choose the best visualisation, set units such as MB, name the panel, and save it to a dashboard.
+
+1669|Prometheus query → Grafana panel → Choose graph or stat → Set units → Save dashboard → View several metrics together
+
+1670|Useful AI panels include total tokens, input tokens, output tokens, latency, error count, CPU, memory, and throughput. A dashboard can be reused for different applications or releases. Variables can allow the user to select an instance or environment and update several panels.
+
+1671|5. Auto refresh and sharing
+
+1672|Set dashboard auto-refresh while a test is running so graphs update automatically. After the test, stop auto-refresh and select the time range that contains the run. Share the dashboard only with people who have access. For a stakeholder report, a screenshot with the important peak marked and explained may be more useful than an unannotated link
+
+1673|6. JMeter data reaches Grafana through Prometheus
+
+1674|JMeter does not send data directly to Grafana in this setup. JMeter captures values, a JSR223 script sends custom metrics to Pushgateway, Prometheus stores them, and Grafana reads them through the Prometheus data source.
+
+1675|JMeter → JSR223/Groovy → Pushgateway → Prometheus → Grafana
+
+1676|If you want JMeter response time or LLM token values in Grafana, push each value as a metric. JMeter Summary Report values are not automatically available in Grafana. A server-side or tool-specific script can be used when the load test runs elsewhere.
+
+1678|7. Production monitoring does not require JMeter
+
+1679|JMeter simulates users for testing. In production, real users generate traffic. A service or server-side script can capture application metrics and push them to Prometheus. Therefore, Grafana and Prometheus can monitor production without JMeter. JMeter is only one possible producer of data.
+
+1680|Prometheus or its exporters need access to the application or server being monitored. For a local demonstration, the application and Prometheus were on the same laptop. In a real environment, install or configure the exporter/service on the correct server and follow the organisation’s network and security rules.
+
+1681|8. Alerts
+
+1682|Grafana can alert when a Prometheus query crosses a threshold. Examples include memory above 90%, token usage above 10,000, high latency, or an error count above an agreed limit. Alerts can appear in Grafana or be sent to tools such as Slack when integrations are configured.
+
+1683|Metric query → Threshold rule → Alert condition → Notification → Action
+
+1684|Thresholds must come from requirements or SLAs. An alert should lead to an action: investigate a cost spike, scale resources, check a failing tool, or stop a dangerous run. AI monitoring can detect unusual token usage that may indicate a prompt problem, repeated calls, or suspicious activity.
+
+1685|9. Retention and time range
+
+1686|Prometheus stores time-based data according to its retention configuration. Retention may be based on time, such as seven or thirty days, or storage size. Old data is deleted when the retention rule is reached. If a dashboard cannot show an older test, check the selected time range and retention policy before assuming the data was never collected.
+
+1687|10. Grafana versus ELK
+
+1688|ELK is commonly used for log collection and log investigation. Grafana is mainly used here for metric dashboards, trends, panels, and alerts. They can complement each other: use metrics to see when and how badly a system changed, then use logs and traces to investigate the individual request.
+
+1689|11. What can fail
+
+1690|·       Grafana is installed but no data source is configured.
+
+1691|·       Prometheus, Pushgateway, exporter, or the application is not running.
+
+1692|·       The Prometheus URL or authentication setting is wrong.
+
+1693|·       The query works in Prometheus but the Grafana panel uses the wrong metric name or unit.
+
+1694|·       JMeter values are never pushed, so Grafana shows no custom token data.
+
+1695|·       The dashboard is not refreshed, so the tester sees old data.
+
+1696|·       Retention removed older test results.
+
+1697|·       A threshold alert has no owner or action.
+
+1698|·       A metrics problem is investigated without checking logs or traces.
+
+1699|Interview answer
+
+1700|“I configure Prometheus as the Grafana data source, create panels for latency, tokens, errors, CPU, and memory, and enable refresh during a test. JMeter pushes custom AI metrics through JSR223 and Pushgateway into Prometheus. I use Grafana alerts for SLA or token thresholds and investigate anomalies with the time range, logs, and traces. In production, a server-side service can push metrics without JMeter.”
+
+1702|Day 39 — LangSmith Tracing, Agents, Tools, and MCP
+
+1703|This class introduced LangSmith as a monitoring and tracing tool for AI agents. It also clarified how an agent, an LLM, tools, and MCP work together. The key tester skill is to use trace evidence to explain what happened, where time was spent, and which tool or model step failed.
+
+1704|1. Connect an application to LangSmith
+
+1705|Create or sign in to a LangSmith account, create a project or agent trace, generate an API key, and configure the application. The application configuration normally needs the LangSmith API key, project name, endpoint, and tracing enabled. The key is usually configured once and should be stored securely, not pasted into public code.
+
+1706|LangSmith account → API key/project → Application configuration → Enable tracing → Restart/setup application → Generate a request → Trace appears in LangSmith
+
+1707|For the class shop application, setup scripts handled some installation. In another project, the required package must be installed on the server where the application runs. Configuration names and setup steps can vary by application architecture, so select the correct “trace an existing application” option and follow the current documentation.
+
+1708|2. What a trace shows
+
+1709|A trace records the chain of work behind one user action. For an order, it may show the first model request, search-products tool, product-availability tool, place-order tool, later model requests, token usage, cost, inputs, outputs, and execution time.
+
+1710|User request → Agent → LLM decision → Tool 1 result → LLM decision → Tool 2 result → Final answer
+
+1711|If an action takes 8.9 seconds and the stakeholder requires 5 seconds, a total response time is not enough to find the solution. The trace shows whether the model request, retrieval, tool, or final response consumed the time. In the example, tools took very little time and the model calls were the larger part. Possible improvements include reducing unnecessary input context, reducing output size, or reducing token usage.
+
+1712|3. Use traces to create test cases
+
+1713|LangSmith can show the application’s available tools and the tools invoked for a particular request. A small application may already have about 25 tools. Do not create only one test per tool. Vishnu’s class guidance was at least four cases per tool, producing roughly 100 cases for 25 tools. The real number depends on risk and requirements.
+
+1714|Useful cases include:
+
+1715|·       Positive request that should invoke the tool.
+
+1716|·       Missing or invalid input.
+
+1717|·       Tool returns no data or an error.
+
+1718|·       Wrong tool selection or wrong tool sequence.
+
+1719|·       Boundary and ambiguous wording.
+
+1720|·       Security, permission, and business-rule cases.
+
+1721|Attach the trace ID, trace link, screenshots, input, output, and tool response to a defect. A statement such as “the bot gave a wrong answer” is weak evidence. A trace can show whether the model selected the wrong tool, the tool returned wrong data, or the final model changed correct data.
+
+1722|4. Agent, LLM, and tool responsibilities
+
+1723|The LLM is the reasoning and language component. It decides which tool is needed and produces the final wording. The tool is normally code or an API that performs the real action. The agent is the program that connects the user, LLM, and tools and controls the sequence.
+
+1724|User/UI → Agent code → LLM → tool request → Agent executes tool → result returns to LLM → final answer
+
+1725|The LLM cannot directly execute an API. The agent code receives the LLM’s tool request, calls the correct tool, sends the result back to the LLM, and continues the workflow. In a real project these pieces may be in one file or multiple services; the logical responsibilities remain the same.
+
+1726|5. RAG and agents
+
+1727|RAG retrieves information using a tool and gives that information to the LLM. An agent adds decision-making and actions. Therefore, an agent can include RAG, but a simple RAG flow is not necessarily a complete action-taking agent.
+
+1729|6. What MCP means
+
+1730|MCP means Model Context Protocol. It is a standard structure that describes tools, their purpose, and their parameters so an LLM-connected agent can understand what tools are available. MCP is not the actual tool implementation. The tool code exists in the backend; MCP provides the standard description and connection structure.
+
+1731|MCP server → tool name + description + parameters → LLM understands capability → Agent code executes backend tool
+
+1732|Without a shared tool definition, developers may need to update the LLM instructions whenever a new tool is added. With MCP, the new tool can be added using the standard structure, so the agent can discover its purpose without changing unrelated instructions. This reduces the risk of modifying a tested system prompt.
+
+1733|7. Custom and pre-built MCP servers
+
+1734|A custom MCP server contains an organisation’s own tool definitions. A pre-built MCP server provides common capabilities, such as GitHub actions or file-system actions. The developer installs or connects the MCP server to the agent. Authentication may still be needed for an external service such as GitHub or a cloud platform.
+
+1735|MCP does not remove the need for an agent. The agent remains the mediator between the LLM and the tool code. MCP standardizes how tool capabilities are exposed.
+
+1736|8. MCP testing focus
+
+1737|·       The tool description accurately explains the real capability.
+
+1738|·       Required parameters and data types are correct.
+
+1739|·       The LLM selects the correct tool for the user intent.
+
+1740|·       The agent executes the selected tool and returns the result.
+
+1741|·       A new tool becomes available without breaking existing tools.
+
+1742|·       Permissions and authentication prevent unauthorized actions.
+
+1743|·       Tool errors produce a safe, understandable response.
+
+1744|·       The trace shows the tool, inputs, output, and sequence.
+
+1745|9. LangSmith versus Grafana
+
+1746|LangSmith is especially useful for AI-agent traces: model calls, tool calls, inputs, outputs, tokens, cost, and step-by-step execution. Grafana is useful for customizable dashboards combining application and infrastructure metrics such as CPU, memory, latency, tokens, and error trends. They complement each other rather than replacing each other.
+
+1747|LangSmith can also support evaluators by connecting a judge model and applying a high-level evaluation. DeepEval and LangSmith evaluators do not replace manual review for high-risk behaviour. Select the tool and metric based on the project.
+
+1748|10. n8n and the tester’s scope
+
+1749|A drag-and-drop tool such as n8n can connect systems such as Teams and Outlook quickly. Large organisations may prefer custom code for control and scalability, while smaller teams may use visual builders. As a tester, focus on how to test the workflow: trigger, tool selection, authentication, data mapping, failure handling, and final result. Do not drift from testing into claiming development expertise.
+
+1750|11. What can fail
+
+1751|·       Wrong API key, project, endpoint, or disabled tracing means no trace appears.
+
+1752|·       The application is not restarted after configuration changes.
+
+1753|·       A developer adds a tool but does not expose it to the LLM.
+
+1754|·       The LLM selects the wrong tool or sends incorrect parameters.
+
+1755|·       The tool returns wrong data and the final answer sounds confident.
+
+1756|·       A slow model call is blamed on the tool without checking the trace.
+
+1757|·       MCP description and backend tool behaviour do not match.
+
+1758|·       A trace is not attached to a defect, so developers cannot reproduce the issue.
+
+1759|Interview answer
+
+1760|“I use LangSmith to trace an agent end to end. I inspect each model call, tool selection, tool response, token count, cost, and execution time. I use the trace to create tool-level test cases and to identify root cause. MCP provides a standard description of tools, while the agent code still executes them. I test tool discovery, parameters, permissions, failures, and regression when a new tool is added.”
+

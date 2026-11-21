@@ -1,0 +1,5 @@
+serial,timestamp,label,order_id,code,message
+1792342038725,1792342038725,05 AI Cancel order,ORD-20261018-9D17B,Non HTTP response code: java.net.SocketException,Non HTTP response message: Socket closed
+1792342761892,1792342761892,03 AI Place order,default,Non HTTP response code: java.net.SocketTimeoutException,Non HTTP response message: Read timed out
+1792344051966,1792344051966,03 AI Place order,default,Non HTTP response code: java.net.SocketTimeoutException,Non HTTP response message: Read timed out
+1792408811648,1792408811648,05 AI Cancel order,ORD-20261019-4E69B,Non HTTP response code: java.net.SocketException,Non HTTP response message: Socket closed
